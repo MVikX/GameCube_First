@@ -8,6 +8,7 @@ class Score {
     var scoreGame = 0
 
 
+
     val textNode = Text("$scoreGame").apply {
         fill = Color.BLACK
         font = Font.font(50.0)

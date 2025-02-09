@@ -44,6 +44,7 @@ class GameManager {
         loopGame.start()
     }
 
+
     // Обновление падения шаров
     private fun updateBalls(deltaTime: Double) {
         for (ball in allBalls) {

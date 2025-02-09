@@ -2,6 +2,7 @@ package org.example
 
 const val floorY = 575  // Временное решение
 
+
 class CollisionHandler(private val allBalls: GameManager) {
 
     fun checkCollision() {

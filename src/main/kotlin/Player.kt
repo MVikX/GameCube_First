@@ -16,6 +16,7 @@ class Player {
 
 
 
+
     fun cubeMove(scene: Scene) {
         scene.setOnKeyPressed { event ->
             if (event.code == KeyCode.A || event.code == KeyCode.D) {

@@ -10,7 +10,6 @@ class Game : Application() {
         val gameManager = GameManager()
 
 
-
         GameScene.createScene(stage)
         gameManager.timeGame(stage.scene, player = player)
     }

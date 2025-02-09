@@ -31,6 +31,7 @@ object GameScene {
         stage.show()
     }
 
+
     fun startGame() {
         isGameStart = true
         startMenu.isVisible = false
