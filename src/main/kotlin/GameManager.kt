@@ -8,7 +8,7 @@ import org.example.GameScene.isGameStart
 class GameManager {
     private var lastTime = System.nanoTime()
     private lateinit var loopGame: AnimationTimer
-    private val objects = Objects()
+    private lateinit var objects: Objects
     private val intervalSpawn = 0.5
     private var timerSpawn = 0.0
     private val ballSpeed = 200.0
@@ -16,6 +16,9 @@ class GameManager {
     val collisionHandler = CollisionHandler(this)
 
     fun timeGame(game: Scene, player: Player) {
+
+        objects = Objects(game.width, game.height, player.cubeSize.height)
+
         loopGame = object : AnimationTimer() {
             override fun handle(now: Long) {
                 val deltaTime = (now - lastTime) / 1_000_000_000.0
@@ -38,7 +41,7 @@ class GameManager {
                 // Проверка столкновений с полом
                 collisionHandler.checkCollision()
 
-                player.update(deltaTime)
+                player.update(deltaTime, game.width)
             }
         }
         loopGame.start()

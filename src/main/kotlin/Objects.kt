@@ -6,21 +6,35 @@ import javafx.scene.shape.Circle
 import javafx.scene.shape.Rectangle
 
 
-class Objects {
+class Objects (sceneWidth:Double, sceneHeight:Double, playerHeight:Double) {
     val root = Pane()
     val floor = Rectangle()
     private val random = kotlin.random.Random
-    private var sceneWith = 400.0
+    private var sceneWith = sceneWidth
+    private var sceneHeight = sceneHeight
+    private var playerHeight = playerHeight
 
 
 
     fun floorD () {
         floor.apply {
             x = 0.0
-            y = 0.0
-            width = 0.0
-            height = 0.0
+            y = sceneHeight - (sceneHeight / 4) + playerHeight
+            width = sceneWith
+            height = sceneHeight
             fill = Color.GREY
+        }
+
+        root.children.add(floor)
+
+        //Слежка за обновлением сцены
+        root.sceneProperty().addListener { _, _, newScene ->
+            if (newScene != null) {
+                sceneWith = newScene.width
+                sceneHeight = newScene.height
+                floor.width = sceneWith
+                floor.y = sceneHeight - (sceneHeight / 4) + playerHeight
+            }
         }
     }
 

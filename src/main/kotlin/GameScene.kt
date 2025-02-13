@@ -11,16 +11,15 @@ import javafx.stage.Stage
 object GameScene {
     val root = Pane()
     val scene = Scene(root, 400.0, 700.0)
-    val player = Player()
     val gameManager = GameManager()
     var isGameStart = false
-    private val objects = Objects()
     private val startMenu = VBox()
     private val endMenu = VBox()
     private val startButton = Button("Start")
     private val restartButton = Button("Restart")
     private val mainMenuButton = Button("Menu")
     val score = Score()
+    lateinit var player: Player
 
     fun createScene(stage: Stage) {
         root.children.addAll(startMenu, endMenu)
@@ -37,28 +36,20 @@ object GameScene {
         startMenu.isVisible = false
         endMenu.isVisible = false
 
+        root.children.clear()
+
+        player = Player(scene.width, scene.height)
+        val objects = Objects(scene.width, scene.height, player.cubeSize.height)
+
+        root.children.addAll(objects.root) //Платформа
+        root.children.add(player.root) //Игрок
+
+        player.cubeMove(scene) // управление
 
         //Счетчик
         root.children.add(score.textNode)
         score.textNode.y = 100.0
         score.textNode.x = scene.width / 2
-
-        //Player
-        root.children.addAll(player.root)
-        player.cubeMove(scene)
-        player.cubeSize.x = (scene.width / 2) - (player.cubeSize.width / 2)
-        player.cubeSize.y = scene.height - (scene.height / 4)
-        gameManager.timeGame(scene, player)
-
-
-        //Платформа
-        root.children.addAll(objects.root)
-        objects.floor.x = 0.0
-        objects.floor.y = ((scene.height - (scene.height / 4)) + player.cubeSize.height)
-        objects.floor.width = scene.width
-        objects.floor.height = ((scene.height - (scene.height / 4)) - player.cubeSize.height * 2)
-
-
     }
 
     fun showEndMenu() {
