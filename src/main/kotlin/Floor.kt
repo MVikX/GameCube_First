@@ -4,35 +4,42 @@ import javafx.scene.paint.Color
 import javafx.scene.shape.Rectangle
 
 class Floor (
-    private val sceneWidth: Double,
-    private val sceneHeight: Double,
-    private val playerY: Double,
-    private val playerHeight: Double
+    x: Double,
+    y: Double,
+    width: Double,
+    height: Double
 ) {
-    private val rectangle: Rectangle
 
-    init {
-        rectangle = Rectangle(0.0, calculateY(), sceneWidth, calculateHeight()).apply {
-            fill = Color.GREY
-        }
+    private val rectangle:Rectangle = Rectangle(x, y, width, height).apply {
+        fill = Color.GREY
     }
 
     fun getRectangle(): Rectangle {
         return rectangle
     }
 
-    private fun calculateY(): Double {
-        return playerY + playerHeight
+    var x: Double
+    get() = rectangle.x
+    set(value) {
+        rectangle.x = value
     }
 
-    private fun calculateHeight(): Double {
-        return sceneHeight - calculateY()
+    var y: Double
+    get() = rectangle.y
+    set(value) {
+        rectangle.y = value
     }
 
-    fun updateFloor(sceneWidth:Double, sceneHeight:Double, playerHeight:Double) {
-        rectangle.width = sceneWidth
-        rectangle.height = sceneHeight - (sceneHeight - playerHeight)
-        rectangle.y = sceneHeight - playerHeight
+    var width: Double
+    get() = rectangle.width
+    set(value) {
+        rectangle.width = value
+    }
+
+    var height: Double
+    get() = rectangle.height
+    set(value) {
+        rectangle.height = value
     }
 
 }
