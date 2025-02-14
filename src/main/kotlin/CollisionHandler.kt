@@ -13,6 +13,9 @@ class CollisionHandler(private val allBalls: GameManager) {
             if (ball.centerY >= floorY - ball.radius) {
                 iterator.remove()
                 GameScene.root.children.remove(ball)
+
+                GameScene.score.scoreGame++
+                GameScene.score.updateScore()
             }
         }
     }
