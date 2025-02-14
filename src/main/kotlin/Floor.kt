@@ -12,9 +12,9 @@ class Floor(
 ) {
     private val rectangle: Rectangle = Rectangle(
         0.0,
-        playerY + playerHeight,  // Пол начинается от низа куба
+        playerY + playerHeight,
         sceneWidth,
-        sceneHeight - (playerY + playerHeight)  // Высота до низа экрана
+        sceneHeight - (playerY + playerHeight)
     ).apply {
         fill = Color.GREY
     }
@@ -28,8 +28,8 @@ class Floor(
     }
 
     fun updateFloor(playerY: Double, playerHeight: Double, sceneWidth: Double, sceneHeight: Double) {
-        rectangle.y = playerY + playerHeight  // Обновляем позицию пола
-        rectangle.height = sceneHeight - (playerY + playerHeight)  // Высота до конца экрана
-        rectangle.width = sceneWidth  // Ширина на всю сцену
+        rectangle.y = playerY + playerHeight
+        rectangle.height = sceneHeight - (playerY + playerHeight)
+        rectangle.width = sceneWidth
     }
 }

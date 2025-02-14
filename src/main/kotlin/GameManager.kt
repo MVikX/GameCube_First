@@ -14,6 +14,7 @@ class GameManager {
     private var timerSpawn = 0.0
     private val ballSpeed = 200.0
     val allBalls = mutableListOf<Circle>()
+    var isGameOver = false
 
     fun timeGame(game: Scene, player: Player) {
         objects = Objects(game.width, game.height, player)
@@ -21,10 +22,12 @@ class GameManager {
 
         loopGame = object : AnimationTimer() {
             override fun handle(now: Long) {
+                if (isGameOver) return
+
                 val deltaTime = (now - lastTime) / 1_000_000_000.0
                 lastTime = now
 
-                // Таймер спавна шаров
+                // таймер спавна шаров
                 if (isGameStart) {
                     timerSpawn += deltaTime
                 }
@@ -46,8 +49,18 @@ class GameManager {
     }
 
     private fun updateBalls(deltaTime: Double) {
+        if (isGameOver) return
+
         for (ball in allBalls) {
             ball.centerY += ballSpeed * deltaTime
+        }
+    }
+
+
+    fun stopGame() {
+        isGameOver = true
+        if (::loopGame.isInitialized) {
+            loopGame.stop()
         }
     }
 }
