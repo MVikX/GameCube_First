@@ -16,7 +16,7 @@ class Score {
 
     val textGameOver = Text("LOSE. You score: $scoreGame").apply {
         fill = Color.BLACK
-        font = Font.font(100.0)
+        font = Font.font(40.0)
     }
 
     fun updateScore() {

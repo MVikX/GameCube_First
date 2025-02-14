@@ -45,6 +45,8 @@ class Player(sceneWidth: Double, sceneHeight: Double) {
     }
 
     fun update(deltaTime: Double, sceneWidth: Double) {
+        if (GameScene.gameManager.isGameOver) return
+
         cubeSize.x += speed * deltaTime
         if (cubeSize.x <= 0) cubeSize.x = 0.0
         if (cubeSize.x > scene.width - cubeSize.width) cubeSize.x = scene.width - cubeSize.width

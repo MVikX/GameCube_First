@@ -1,5 +1,7 @@
 package org.example
 
+import javafx.application.Platform
+
 class CollisionHandler(private val allBalls: GameManager) {
 
     fun checkCollision() {
@@ -7,7 +9,6 @@ class CollisionHandler(private val allBalls: GameManager) {
         while (iterator.hasNext()) {
             val ball = iterator.next()
 
-            // Берем первый пол из списка floors
             val firstFloor = GameScene.floors.firstOrNull()
             if (firstFloor != null) {
                 val floorY = firstFloor.getRectangle().y
@@ -25,10 +26,12 @@ class CollisionHandler(private val allBalls: GameManager) {
                 GameScene.player.lives--
                 GameScene.score.updateLives(GameScene.player.lives)
 
-                if (GameScene.player.lives <= 0) {
-                    GameScene.score.scoreGame = 0
-                    GameScene.score.updateScore()
-                    GameScene.showEndMenu()
+                if (GameScene.player.lives == 0) {
+                    GameScene.gameManager.stopGame()
+                    Platform.runLater {
+                        GameScene.score.textGameOver.text = "LOSE. You score: ${GameScene.score.scoreGame}"
+                        GameScene.showEndMenu()
+                    }
                 }
 
                 iterator.remove()
