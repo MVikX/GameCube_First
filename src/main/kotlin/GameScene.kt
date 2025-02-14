@@ -11,30 +11,34 @@ import javafx.scene.text.FontWeight
 import javafx.scene.text.Text
 import javafx.stage.Stage
 
-object GameScene {
-    val root = Pane()
-    val scene = Scene(root, 400.0, 700.0)
 
+object GameScene {
+    //основные элементы сцены
+    val root = Pane()
+    val scene = Scene(root, Constants.SCENE_WIDTH, Constants.SCENE_HEIGHT)
+
+    //управление игрой
     var gameManager = GameManager()
     var isGameStart = false
 
-    //меню
+    //меню и UI
     private val startMenu = VBox()
     private val endMenu = VBox()
-
-    //кнопки
     private val startButton = Button("Start")
     private val restartButton = Button("Restart")
     private val mainMenuButton = Button("Menu")
 
+    //игровые элементы
     val score = Score()
     lateinit var player: Player
-    var floors = mutableListOf<Floor>()
+    val floors = mutableListOf<Floor>()
 
+    //UI элементы
     val livesText = Text("Lives: 3").apply {
         fill = Color.RED
-        font = Font.font("Arial", FontWeight.BOLD, 30.0)
+        font = Font.font(Constants.FONT_FAMILY, FontWeight.BOLD, Constants.FONT_SIZE)
     }
+
 
     fun createScene(stage: Stage) {
         endMenu.alignment = Pos.CENTER
@@ -46,10 +50,11 @@ object GameScene {
         //showEndMenu()
     }
 
+
     fun startGame() {
         isGameStart = true
 
-        root.children.clear()
+        root.children.clear() //очистка сцены
 
         startMenu.isVisible = false
         endMenu.isVisible = false
@@ -64,26 +69,28 @@ object GameScene {
         root.children.addAll(objects.root)
         root.children.add(player.root)
 
-        player.cubeMove(scene)
+        player.cubeMove(scene) //подключение управления
 
+        //отоброжение счетчика
         root.children.add(score.textNode)
-        score.textNode.y = 100.0
-        score.textNode.x = scene.width / 2
+        score.textNode.y = Constants.SCORE_TEXT_Y
+        score.textNode.x = scene.width / Constants.CENTER_OFFSET
 
+        //отоброжение жизней
         root.children.add(livesText)
-        player.lives = 3
-        livesText.text = "Lives: 3"
+        player.lives = Constants.LIVES_START
+        livesText.text = "Lives: ${Constants.LIVES_START.toByte()}"
 
-        updateLivesPosition()
+        updateLivesPosition() //обновление позиции жизни
 
-        gameManager.timeGame(scene, player)
+        gameManager.timeGame(scene, player) //запуск игрового цикла
     }
 
     fun updateLivesPosition() {
         if (floors.isNotEmpty()) {
             val floor = floors.first()
-            livesText.x = floor.root.layoutX + (floor.getRectangle().width / 2) - 40
-            livesText.y = floor.root.layoutY + 30
+            livesText.x = floor.root.layoutX + (floor.getRectangle().width / Constants.CENTER_OFFSET) - Constants.LIVES_TEXT_OFFSET_X
+            livesText.y = floor.root.layoutY + Constants.LIVES_TEXT_OFFSET_Y
         }
     }
 
@@ -102,14 +109,14 @@ object GameScene {
 
         score.textGameOver.text = "LOSE. You score: ${score.scoreGame}"
         if (!endMenu.children.contains(score.textGameOver)) {
-            endMenu.children.add(0, score.textGameOver)
+            endMenu.children.add(Constants.MENU_FIRST_POSITION, score.textGameOver)
         }
 
         restartButton.setOnAction {
             startGame()
         }
 
-        restartButton.setPrefSize(100.0, 100.0)
+        restartButton.setPrefSize(Constants.BUTTON_WIDTH, Constants.BUTTON_HEIGHT)
         if (!endMenu.children.contains(restartButton)) {
             endMenu.children.add(restartButton)
         }
@@ -118,8 +125,8 @@ object GameScene {
             showStartMenu()
         }
 
-        mainMenuButton.setPrefSize(100.0, 100.0)
-        endMenu.spacing = 10.0
+        mainMenuButton.setPrefSize(Constants.BUTTON_WIDTH, Constants.BUTTON_HEIGHT)
+        endMenu.spacing = Constants.MENU_SPACING
         if (!endMenu.children.contains(mainMenuButton)) {
             endMenu.children.add(mainMenuButton)
         }
@@ -137,7 +144,7 @@ object GameScene {
         startButton.setOnAction {
             startGame()
         }
-        startButton.setPrefSize(100.0, 100.0)
+        startButton.setPrefSize(Constants.BUTTON_WIDTH, Constants.BUTTON_HEIGHT)
         if (!startMenu.children.contains(startButton)) {
             startMenu.children.add(startButton)
         }
