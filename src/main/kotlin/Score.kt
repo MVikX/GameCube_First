@@ -18,7 +18,7 @@ class Score {
         fill = Color.BLACK
         font = Font.font(100.0)
     }
-
+ 
 
     fun updateScore() {
         textNode.text = "$scoreGame"
