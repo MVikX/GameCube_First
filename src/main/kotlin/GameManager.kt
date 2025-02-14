@@ -9,15 +9,15 @@ class GameManager {
     private var lastTime = System.nanoTime()
     private lateinit var loopGame: AnimationTimer
     private lateinit var objects: Objects
+    private lateinit var collisionHandler: CollisionHandler
     private val intervalSpawn = 0.5
     private var timerSpawn = 0.0
     private val ballSpeed = 200.0
     val allBalls = mutableListOf<Circle>()
-    val collisionHandler = CollisionHandler(this)
 
     fun timeGame(game: Scene, player: Player) {
-
         objects = Objects(game.width, game.height, player)
+        collisionHandler = CollisionHandler(this)
 
         loopGame = object : AnimationTimer() {
             override fun handle(now: Long) {
@@ -35,10 +35,8 @@ class GameManager {
                     timerSpawn = 0.0
                 }
 
-                // Обновление движения шаров
                 updateBalls(deltaTime)
 
-                // Проверка столкновений с полом
                 collisionHandler.checkCollision()
 
                 player.update(deltaTime, game.width)
@@ -47,8 +45,6 @@ class GameManager {
         loopGame.start()
     }
 
-
-    // Обновление падения шаров
     private fun updateBalls(deltaTime: Double) {
         for (ball in allBalls) {
             ball.centerY += ballSpeed * deltaTime

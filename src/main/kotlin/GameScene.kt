@@ -5,8 +5,11 @@ import javafx.scene.Scene
 import javafx.scene.control.Button
 import javafx.scene.layout.Pane
 import javafx.scene.layout.VBox
+import javafx.scene.paint.Color
+import javafx.scene.text.Font
+import javafx.scene.text.FontWeight
+import javafx.scene.text.Text
 import javafx.stage.Stage
-
 
 object GameScene {
     val root = Pane()
@@ -20,82 +23,83 @@ object GameScene {
     private val mainMenuButton = Button("Menu")
     val score = Score()
     lateinit var player: Player
+    var floors = mutableListOf<Floor>()
+
+    val livesText = Text("Lives: 3").apply {
+        fill = Color.RED
+        font = Font.font("Arial", FontWeight.BOLD, 30.0)
+    }
 
     fun createScene(stage: Stage) {
         root.children.addAll(startMenu, endMenu)
-        //showStartMenu()
-        //showEndMenu()
-        startGame()
         stage.scene = scene
         stage.show()
     }
-
 
     fun startGame() {
         isGameStart = true
         startMenu.isVisible = false
         endMenu.isVisible = false
-
         root.children.clear()
 
         player = Player(scene.width, scene.height)
         val objects = Objects(scene.width, scene.height, player)
 
-        root.children.addAll(objects.root) //Платформа
-        root.children.add(player.root) //Игрок
+        root.children.addAll(objects.root)
+        root.children.add(player.root)
 
-        player.cubeMove(scene) // управление
+        player.cubeMove(scene)
 
-        //Счетчик
         root.children.add(score.textNode)
         score.textNode.y = 100.0
         score.textNode.x = scene.width / 2
+
+        root.children.add(livesText)
+
+        updateLivesPosition()
+    }
+
+    fun updateLivesPosition() {
+        if (floors.isNotEmpty()) {
+            val floor = floors.first()
+            livesText.x = floor.root.layoutX + (floor.getRectangle().width / 2) - 40
+            livesText.y = floor.root.layoutY + 30
+        }
     }
 
     fun showEndMenu() {
         isGameStart = false
-
-        //End Menu
         endMenu.isVisible = true
         endMenu.alignment = Pos.CENTER
         endMenu.prefWidth = scene.width
         endMenu.prefHeight = scene.height
 
-        //Restart Game
         restartButton.setOnAction { startGame() }
         restartButton.setPrefSize(100.0, 100.0)
         if (!endMenu.children.contains(restartButton)) {
             endMenu.children.add(restartButton)
         }
 
-        //Main Menu
         mainMenuButton.setOnAction { showStartMenu() }
         mainMenuButton.setPrefSize(100.0, 100.0)
         endMenu.spacing = 10.0
         if (!endMenu.children.contains(mainMenuButton)) {
             endMenu.children.add(mainMenuButton)
         }
-
     }
 
     private fun showStartMenu() {
         isGameStart = false
-
-        //Start Menu
         startMenu.isVisible = true
         startMenu.alignment = Pos.CENTER
         startMenu.prefWidth = scene.width
         startMenu.prefHeight = scene.height
 
-        //Start Button
         startButton.setOnAction { startGame() }
         startButton.setPrefSize(100.0, 100.0)
         if (!startMenu.children.contains(startButton)) {
             startMenu.children.add(startButton)
         }
-
-
-        //удаление кнопок
 
         endMenu.isVisible = false
     }

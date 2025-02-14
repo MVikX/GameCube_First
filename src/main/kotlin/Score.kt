@@ -1,13 +1,13 @@
 package org.example
 
+import javafx.application.Platform
 import javafx.scene.paint.Color
 import javafx.scene.text.Font
+import javafx.scene.text.FontWeight
 import javafx.scene.text.Text
 
 class Score {
     var scoreGame = 0
-
-
 
     val textNode = Text("$scoreGame").apply {
         fill = Color.BLACK
@@ -18,9 +18,17 @@ class Score {
         fill = Color.BLACK
         font = Font.font(100.0)
     }
- 
 
     fun updateScore() {
         textNode.text = "$scoreGame"
+    }
+
+    fun updateLives(lives: Int) {
+        Platform.runLater {
+            GameScene.livesText.text = "Lives: $lives"
+            GameScene.updateLivesPosition()
+
+            GameScene.livesText.parent?.requestLayout()
+        }
     }
 }

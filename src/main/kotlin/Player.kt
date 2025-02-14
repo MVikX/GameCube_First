@@ -7,22 +7,21 @@ import javafx.scene.paint.Color
 import javafx.scene.shape.Rectangle
 import org.example.GameScene.scene
 
-
-class Player (sceneWidth: Double, sceneHeight: Double) {
+class Player(sceneWidth: Double, sceneHeight: Double) {
     val root = Pane()
     private var speed = 0.0
     val cubeSize = Rectangle(0.0, 0.0, 50.0, 50.0).apply { fill = Color.BLACK }
     private val activeKey = mutableListOf<KeyCode>()
 
+    var lives = 3
 
     init {
         root.children.add(cubeSize)
 
-        //кординаты куба
+        // координаты куба
         cubeSize.x = (scene.width / 2) - (cubeSize.width / 2)
         cubeSize.y = sceneHeight - (sceneHeight / 4)
     }
-
 
     fun cubeMove(scene: Scene) {
         scene.setOnKeyPressed { event ->
@@ -50,5 +49,4 @@ class Player (sceneWidth: Double, sceneHeight: Double) {
         if (cubeSize.x <= 0) cubeSize.x = 0.0
         if (cubeSize.x > scene.width - cubeSize.width) cubeSize.x = scene.width - cubeSize.width
     }
-
 }
