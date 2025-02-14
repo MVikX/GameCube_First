@@ -17,7 +17,7 @@ class GameManager {
 
     fun timeGame(game: Scene, player: Player) {
 
-        objects = Objects(game.width, game.height, player.cubeSize.y, player.cubeSize.height)
+        objects = Objects(game.width, game.height, player)
 
         loopGame = object : AnimationTimer() {
             override fun handle(now: Long) {

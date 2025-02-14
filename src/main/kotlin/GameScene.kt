@@ -39,7 +39,7 @@ object GameScene {
         root.children.clear()
 
         player = Player(scene.width, scene.height)
-        val objects = Objects(scene.width, scene.height,player.cubeSize.y ,player.cubeSize.height)
+        val objects = Objects(scene.width, scene.height, player)
 
         root.children.addAll(objects.root) //Платформа
         root.children.add(player.root) //Игрок

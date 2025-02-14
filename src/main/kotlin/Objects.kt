@@ -5,22 +5,27 @@ import javafx.scene.paint.Color
 import javafx.scene.shape.Circle
 
 
-class Objects (sceneWidth:Double, sceneHeight:Double,playerY: Double, playerHeight:Double) {
+class Objects (sceneWidth:Double, sceneHeight:Double, player:Player) {
     val root = Pane()
-    private val floor: Floor = Floor(sceneWidth, sceneHeight, playerY,playerHeight)
+    private val floors = mutableListOf<Floor>()
     private val random = kotlin.random.Random
     private var sceneWith = sceneWidth
     private var sceneHeight = sceneHeight
-    private var playerHeight = playerHeight
+
 
     init {
-        root.children.add(floor.getRectangle())
+        addFloorPlayer(player)
+    }
 
-        root.sceneProperty().addListener { _, _, newScene ->
-            if (newScene != null) {
-                floor.updateFloor(newScene.width, newScene.height, playerHeight)
-            }
-        }
+    fun addFloorPlayer(player: Player) {
+        val floorX = 0.0
+        val floorY = player.cubeSize.y + player.cubeSize.height
+        val floorWidth = sceneWith
+        val floorHeight = sceneHeight
+
+        val floor = Floor(floorX, floorY, floorHeight, floorWidth)
+        floors.add(floor)
+        root.children.add(floor.getRectangle())
     }
 
     fun createBall(): Circle {
