@@ -26,10 +26,4 @@ class Floor(
     fun getRectangle(): Rectangle {
         return rectangle
     }
-
-    fun updateFloor(playerY: Double, playerHeight: Double, sceneWidth: Double, sceneHeight: Double) {
-        rectangle.y = playerY + playerHeight
-        rectangle.height = sceneHeight - (playerY + playerHeight)
-        rectangle.width = sceneWidth
-    }
 }

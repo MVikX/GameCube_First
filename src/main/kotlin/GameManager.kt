@@ -5,16 +5,21 @@ import javafx.scene.Scene
 import javafx.scene.shape.Circle
 import org.example.GameScene.isGameStart
 
+
 class GameManager {
-    private var lastTime = System.nanoTime()
-    private lateinit var loopGame: AnimationTimer
-    private lateinit var objects: Objects
-    private lateinit var collisionHandler: CollisionHandler
-    private val intervalSpawn = 0.5
-    private var timerSpawn = 0.0
-    private val ballSpeed = 200.0
-    val allBalls = mutableListOf<Circle>()
+    // статусы игры
     var isGameOver = false
+    private var lastTime = System.nanoTime()
+    private var timerSpawn = 0.0
+
+    // объекты игры
+    lateinit var loopGame: AnimationTimer
+    lateinit var objects: Objects
+    lateinit var collisionHandler: CollisionHandler
+
+    // список шаров
+    val allBalls = mutableListOf<Circle>()
+
 
     fun timeGame(game: Scene, player: Player) {
         objects = Objects(game.width, game.height, player)
@@ -24,25 +29,25 @@ class GameManager {
             override fun handle(now: Long) {
                 if (isGameOver) return
 
-                val deltaTime = (now - lastTime) / 1_000_000_000.0
+                val deltaTime = (now - lastTime) / Constants.NANO_TO_SECONDS
                 lastTime = now
 
                 // таймер спавна шаров
                 if (isGameStart) {
                     timerSpawn += deltaTime
                 }
-                if (timerSpawn >= intervalSpawn) {
+
+                //спавн нового шара
+                if (timerSpawn >= Constants.BALL_SPAWN_INTERVAL) {
                     val newBall = objects.createBall()
                     GameScene.root.children.add(newBall)
                     allBalls.add(newBall)
                     timerSpawn = 0.0
                 }
 
-                updateBalls(deltaTime)
-
-                collisionHandler.checkCollision()
-
-                player.update(deltaTime, game.width)
+                updateBalls(deltaTime) // обновление позиции шаров
+                collisionHandler.checkCollision() // проверка столкновений
+                player.update(deltaTime, game.width) // движение игрока
             }
         }
         loopGame.start()
@@ -52,7 +57,7 @@ class GameManager {
         if (isGameOver) return
 
         for (ball in allBalls) {
-            ball.centerY += ballSpeed * deltaTime
+            ball.centerY += Constants.BALL_SPEED * deltaTime
         }
     }
 

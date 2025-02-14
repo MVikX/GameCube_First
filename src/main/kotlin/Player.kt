@@ -8,20 +8,30 @@ import javafx.scene.shape.Rectangle
 import org.example.GameScene.scene
 
 class Player(sceneWidth: Double, sceneHeight: Double) {
+    //корневой элемент игрока
     val root = Pane()
+
+    //основные характеристики
+    var lives = Constants.LIVES_START
     private var speed = 0.0
-    val cubeSize = Rectangle(0.0, 0.0, 50.0, 50.0).apply { fill = Color.BLACK }
+
+    //визуальные параметры
+    val cubeSize = Rectangle(0.0, 0.0, Constants.PLAYER_SIZE, Constants.PLAYER_SIZE).apply {
+        fill = Color.BLACK
+    }
+
+    //управление
     private val activeKey = mutableListOf<KeyCode>()
 
-    var lives = 3
 
     init {
         root.children.add(cubeSize)
 
         // координаты куба
-        cubeSize.x = (scene.width / 2) - (cubeSize.width / 2)
-        cubeSize.y = sceneHeight - (sceneHeight / 4)
+        cubeSize.x = (scene.width / Constants.CENTER_OFFSET) - (cubeSize.width / Constants.CENTER_OFFSET)
+        cubeSize.y = sceneHeight - (sceneHeight * Constants.PLAYER_START_POSITION_Y_RATIO)
     }
+
 
     fun cubeMove(scene: Scene) {
         scene.setOnKeyPressed { event ->
@@ -31,15 +41,15 @@ class Player(sceneWidth: Double, sceneHeight: Double) {
                 }
             }
             when (event.code) {
-                KeyCode.A -> speed = -200.0
-                KeyCode.D -> speed = 200.0
+                KeyCode.A -> speed = -Constants.PLAYER_SPEED //влево
+                KeyCode.D -> speed = Constants.PLAYER_SPEED //вправо
                 else -> {}
             }
         }
         scene.setOnKeyReleased { event ->
-            activeKey.remove(event.code)
+            activeKey.remove(event.code) //удаление клавиши
             if (activeKey.isEmpty()) {
-                speed = 0.0
+                speed = Constants.PLAYER_STOP_SPEED //стоп куба
             }
         }
     }
@@ -48,7 +58,7 @@ class Player(sceneWidth: Double, sceneHeight: Double) {
         if (GameScene.gameManager.isGameOver) return
 
         cubeSize.x += speed * deltaTime
-        if (cubeSize.x <= 0) cubeSize.x = 0.0
+        if (cubeSize.x <= Constants.PLAYER_MIN_X) cubeSize.x = Constants.PLAYER_MIN_X
         if (cubeSize.x > scene.width - cubeSize.width) cubeSize.x = scene.width - cubeSize.width
     }
 }

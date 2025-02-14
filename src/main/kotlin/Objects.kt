@@ -4,6 +4,7 @@ import javafx.scene.layout.Pane
 import javafx.scene.paint.Color
 import javafx.scene.shape.Circle
 
+
 class Objects(sceneWidth: Double, sceneHeight: Double, player: Player) {
     val root = Pane()
     private val floors = mutableListOf<Floor>()
@@ -29,18 +30,19 @@ class Objects(sceneWidth: Double, sceneHeight: Double, player: Player) {
     }
 
     fun createBall(): Circle {
-        val minRadius = 5.0
-        val maxRadius = 40.0
-        val radius = random.nextDouble(minRadius, maxRadius)
+        val radius = random.nextDouble(Constants.BALL_MIN_RADIUS, Constants.BALL_MAX_RADIUS)
 
         val minX = radius
         val maxX = sceneWith - radius
 
-        val validX = if (minX > maxX) sceneWith / 2 else random.nextDouble(minX, maxX)
+        val validX = random.nextDouble(
+            minOf(minX, maxX),
+            maxOf(minX, maxX)
+        )
 
         val ball = Circle(radius).apply {
             fill = Color.RED
-            centerY = 0.0
+            centerY = Constants.BALL_START_Y
             centerX = validX
         }
 
